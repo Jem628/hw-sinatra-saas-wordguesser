@@ -15,10 +15,9 @@ class WordGuesserGame
   def self.get_random_word
     require 'uri'
     require 'net/http'
-    uri = URI('https://randomword.saasbook.info/RandomWord')
-    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      response = http.get(uri.path)
-      return response.body.scan(/<div>(.+?)<\/div>/).flatten.first
+    uri = URI('http://randomword.saasbook.info/RandomWord')
+    Net::HTTP.new('randomword.saasbook.info').start do |http|
+      return http.post(uri, "").body
     end
   end
 end
