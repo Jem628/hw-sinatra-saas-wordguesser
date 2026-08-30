@@ -1,5 +1,6 @@
-Part 0: Demystifying SaaS app creation
-==============================
+# Part 0: Demystifying SaaS app creation
+
+# CHIP 3.7: Wordguesser
 
 **Goal:** Understand the steps needed to create, version, and deploy a SaaS app, including tracking the libraries it depends on so that your production and development environments are as similar as possible.
 
@@ -22,9 +23,11 @@ Let's start with the following steps:
 
 ```rb
 source 'https://rubygems.org'
-ruby '2.6.6'
+ruby '3.3.8'
 
-gem 'sinatra', '>= 2.0.1'
+gem 'sinatra', '~> 4.1'
+gem 'puma',    '~> 6.6'
+gem 'rackup',  '~> 2.2.1'
 ```
 
 The first line says that the preferred place to download any necessary gems is https://rubygems.org, which is where the Ruby community registers "production ready" gems.
@@ -71,11 +74,14 @@ As Chapter 2 of *ESaaS* explains, a SaaS app essentially recognizes and responds
 Create a file in your project called `app.rb` containing the following:
 
 ```rb
-require 'sinatra'
+require 'sinatra/base'
 
 class MyApp < Sinatra::Base
+
+  set :host_authorization, { permitted_hosts: [] }
+
   get '/' do
-    "<!DOCTYPE html><html><head></head><body><h1>Hello World</h1></body></html>"
+    '<!DOCTYPE html><html><body><h1>Hello World</h1></body></html>'
   end
 end
 ```
@@ -96,7 +102,8 @@ As you see from the above simple example, Sinatra lets you write functions that 
 To run our app, we have to start the application server and presentation tier (web) server.  The `rack` application server is controlled by a file `config.ru`, which you must now create and add to version control, containing the following:
 
 ```rb
-require './app'
+require_relative 'app'
+
 run MyApp
 ```
 
@@ -113,7 +120,7 @@ To see the webapp:
 
 | Local computer | Codio |
 |-----|------|
-| Visit `localhost:3000` in your browser to see the webapp. It will open in a new tab in the IDE if you click on it, but you should open up a fresh browser tab and paste in that URL. <br><br> Point a new Web browser tab at the running app's URL and verify that you can see "Hello World". | Click the "Box URL" button on your top tool bar. The button should be pre-configured to point at port 3000: <br> <br> ![BoxURL](https://global.codio.com/content/BoxURL.png) <br> <br> The app should open in a new tab. Verify that you can see "Hello World". |
+| Visit `localhost:3000` in your browser to see the webapp. It will open in a new tab in the IDE if you click on it, but you should open up a fresh browser tab and paste in that URL. <br><br> Point a new Web browser tab at the running app's URL and verify that you can see "Hello World". | Click the "Box URL" button on your top tool bar that has been pre-configured to point at port 3000: <br> <br> ![BoxURL](img/BoxURLpreview.png) <br> <br> The app should open in a new tab. Make sure to configure the box url to open the app in a new browser tab instead of a codio tab as the latter don't always work. Verify that you can see "Hello World". |
 
 #### Self Check Question
 
@@ -162,33 +169,41 @@ In this case we are prefixing with `bundle exec` again in order to ensure we are
 
 Modify `app.rb` to print a different message, and verify that the change is detected by refreshing your browser tab with the running app.  Also before we move on you should commit your latest changes to git.
 
+Git Walkthrough
+----------------
+You and your group share a GitHub team that is named `fa23-xx` where the `xx` is your group number. As part of this team you will each have access to a repo called `fa23-chips3.7-xx` where you will keep track of each of your versions of this CHIPS. We will use this as an opportunity to teach you some Git tricks that you'll be using for the rest of the term.
+
+First, you'll need to add the GitHub repo as a remote to your Codio local repo. In the GitHub repo, navigate to the green "Code" dropdown and copy the SSH link. Then run this command.
+```
+git remote add gh [SSH_LINK]
+```
+This will add the GitHub repo to the project as a remote repo named gh. While you could push directly to the main branch of this repo, in order to keep main clean for the final submission, each of you will make a branch locally and on the GitHub remote repo by running the commands below.
+```
+git checkout -b [GITHUB_USERNAME]
+git push -u gh [GITHUB_USERNAME]
+```
+From this branch, your teammates will be able to view your code and you'll eventually be able to make a Pull Request to finalize your changes before merging back into the main branch which we'll provide detailed instructions for in Part 3 of this assignment. In the meantime, **as long as you're on your own branch**, whenever you want to update your code you'll need to git add, commit, and simply `git push gh`.
+
 Deploy to Render
 ----------------
-Render is a cloud platform-as-a-service (PaaS) where we can deploy our Sinatra (and later Rails) applications. If you don't have an account yet, go sign up at http://www.render.com. You'll need your login and password for the next step.
+Render is a cloud platform-as-a-service (PaaS) where we can deploy our Sinatra (and later Rails) applications. If you don't have an account yet, go sign up at https://render.com — you can sign up with your GitHub account, which also connects your repos in the same step.
 
-Install Render CLI following [instructions](https://devcenter.render.com/articles/render-cli).
+To create your app on Render:
 
-Log in to your Render account by typing the command: `render login` in the terminal. This will connect you to your Render account.
+1. From the Render dashboard, click **New > Web Service**
+2. Connect your GitHub repo (select the `fa23-chips3.7-xx` repo for your team)
+3. Give the service a name — this becomes part of your public URL (`https://<name>.onrender.com`)
+4. Set the **Build Command** to: `bundle install`
+5. Set the **Start Command** to: `bundle exec rackup config.ru -p $PORT`
+6. Choose the **Free** instance type and click **Deploy**
 
-While in the root directory of your project (not your whole workspace), type `render create` to create a new project in Render. This will tell the Render service to prepare for some incoming code, and locally it will add a remote git repository for you called `render`.
+Render will run `bundle install`, start your app, and give you a live URL. Real-time build logs appear in the dashboard as it deploys.
 
-Next, make sure you stage and commit all changes locally as instructed above (i.e. `git add`, `git commit`, etc).
-
-Earlier we saw that to run the app locally you run `rackup` to start the Rack appserver, and Rack looks in `config.ru` to determine how to start your Sinatra app.  How do you tell a production environment how to start an appserver or other processes necessary to receive requests and start your app?  In the case of Render, this is done with a special file named `Procfile`,  which specifies one or more types of Render processes your app will use, and how to start each one. The most basic Render process type is called a Dyno, or "web worker".  One Dyno can serve one user request at a time.  Since we're on Render's free tier, we can only have one Dyno. Let's create a file named `Procfile`, and only this as the name (i.e. Procfile.txt is not valid). Write the following line in your `Procfile`:
-
+> **Note:** Free Render services spin down after 15 minutes of inactivity. The first request after idle takes about 1 minute to respond — this is normal, not a broken deployment. Visit your app URL a couple minutes before any demo to warm it up.
+heroku apps:favorites:add -a fa23-xx
+heroku git:remote -a fa23-xx
+heroku stack:set heroku-24
 ```
-web: bundle exec rackup config.ru -p $PORT
-```
-
-This tells Render to start a single web worker (Dyno) using essentially the same command line you used to start Rack locally. Note that in some cases, a `Procfile` is not necessary since Render can infer from your files how to start the app. However, it's always better to be explicit.
-
-Your local repo is now ready to deploy to Render:
-
-```
-$ git push gh main
-```
-
-(`master` refers to which branch of the remote Render repo we are pushing to.  We'll learn about branches later in the course, but for now, suffice it to say that you can only deploy to the `master` branch on Render.) This push will create a running instance of your app at some URL ending with `renderapp.com`. Enter that URL in a new browser tab to see your app running live. Congratulations, you did it--your app is live!
 
 Summary
 -------
@@ -201,8 +216,10 @@ Summary
 
 * You versioned the important files containing not only your app's code but the necessary info to reproduce all the libraries it relies on and the file that starts up the app.
 
-* You deployed this simple app to Render.
+* You or one of your teammates deployed this simple app to Render.
 
 -----
 
-Next: [Part 1 - Wordguesser](part_1_wordguesser.md)
+---
+
+[Contents](README.md) | [Part 1: Wordguesser →](02-Part-1--Wordguesser.md)

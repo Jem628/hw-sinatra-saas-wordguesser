@@ -1,6 +1,4 @@
-
-Part 3: Connecting Wordguesser to Sinatra
-============================================
+# Part 3: Connecting WordGuesserGame to Sinatra
 
 You've already met Sinatra.  Here's what's new in the Sinatra app skeleton [`app.rb`](../app.rb) that we provide for Wordguesser:
 
@@ -40,7 +38,7 @@ messages in the <code>session[]</code> hash?</summary>
 Running the Sinatra app
 -----------------------
 
-As before, run the shell command `bundle exec rackup --port 3000` to start the app, or `bundle exec rerun -- rackup --port 3000 --host 0.0.0.0` if you want to rerun the app each time you make a code change.
+As before, run the shell command `bundle exec rackup --host 0.0.0.0 --port 3000` to start the app, or `bundle exec rerun -- rackup --host 0.0.0.0 --port 3000` if you want to rerun the app each time you make a code change.
 
 #### Self Check Question
 
@@ -62,18 +60,49 @@ Visit this URL and verify that the Start New Game page appears.
 
 Verify that when you click the New Game button, you get an error.  This is because we've deliberately left the `<form>` that encloses this button incomplete: we haven't specified where the form should post to. We'll do that next, but we'll do it in a test-driven way.
 
-But first, let's get our app onto Render.  This is actually a critical step.  We need to ensure that our app will run on render **before** we start making significant changes.
+Time to PR
+----------
+Now let's get this local progress onto your remote GitHub repo. If you have been chosen by your team or are simply the first on your team to get to this point then you can feel free to make a Pull Request (PR) to the main branch of your GitHub repo. This can be done directly through the GitHub site by clicking the "`X` branches" button near the top of the repo page.
 
-* First, run `bundle install` to make sure our Gemfile and Gemfile.lock are in sync.
-* Next, type `git add .` to stage all changed files (including Gemfile.lock)
-* Then type `git commit -m "Ready for Render!"` to commit all local changes.
-* Next, type `render login` and authenticate.
-* Since this is the first time we're telling Render about the Wordguesser app, we must type `render create` to have Render prepare to recieve this code and to have it create a git reference for referencing the new remote repository.
-* Then, type `git push gh main` to push your code to Render.
-* When you want to update Render later, you only need to commit your changes to git locally, then push to Render as in the last step.
-* Verify that the Render-deployed Wordguesser behaves the same as your development version before continuing. A few lines up from the bottom of the Render output in the terminal should have a URL ending in renderapp.com. Find that, copy it to the clipboard, and paste it into a browser tab to see the current app.
+![](img/branches.png)
+
+From here, find your branch and click `New pull request`.
+
+![](img/open_pr.png)
+
+Now make sure that the base branch is `main` and that the compare branch is your own. Then add a title, description of the changes you've made and any other info that you'd like your team to know about your PR. Create the PR and let your teammates know so that they can check out the changes and give you approval.
+
+![](img/create_pr.png)
+
+Protocols vary from team to team but in general, it is good practice to have at least 1, preferrably 2, teammates review your changes to ensure that no bugs creep through the merge. Once the reviews are in, all comments addressed, and any potential merge conflicts are resolved, merge in your changes!
+
+Now, in Codio get back on the master branch and pull in the newest changes with `git checkout master && git pull gh main`.
+
+Deploying to Render
+----------
+
+Now, let's get our app onto Render. This is actually a critical step. We need to ensure that our app will run in production **before** we start making significant changes.
+
+Earlier we saw that to run the app locally you run `rackup` to start the Rack appserver, and Rack looks in `config.ru` to determine how to start your Sinatra app. A common convention is a file named `Procfile`, which documents how your app's web process is started. Create a file named `Procfile` (the name only — `Procfile.txt` is not valid) with the following line:
+
+
+
+This documents the command to start your web process. Note that Render does not read the `Procfile` automatically — it uses the **Start Command** you set in the dashboard (`bundle exec rackup config.ru -p $PORT`). However, creating a `Procfile` is good practice.
+
+Your local repo is now ready to deploy:
+
+* Run `bundle install` to make sure your Gemfile and Gemfile.lock are in sync.
+* Stage and commit all changes: `git add . && git commit -m "Ready for Render!"`
+* Push to GitHub: `git push gh main`
+
+Since Render is connected to your GitHub repo and auto-deploy is enabled, pushing to `main` automatically triggers a new build and deployment on Render. No separate push command is needed.
+
+* Verify the deployment by opening your app's URL (`https://<name>.onrender.com`), shown at the top of your service page on the Render dashboard.
+* Verify that the Render-deployed Wordguesser behaves the same as your development version before continuing.
 * Verify the broken functionality by clicking the new game button.
 
------
+Use `git checkout [YOUR_BRANCH_NAME]` to switch back to your branch once you're ready to start making more changes. For all future deployments to Render, simply commit to `main` and push — Render will pick them up automatically.
 
-Next: [Part 4 - Cucumber](part_4_cucumber.md)
+---
+
+[← Part 2: RESTful thinking for Wordguesser](03-Part-2--RESTful-thinking-for-Wordguesser.md) | [Contents](README.md) | [Part 4: Introducing Cucumber →](05-Part-4--Introducing-Cucumber.md)

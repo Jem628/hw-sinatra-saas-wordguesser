@@ -47,11 +47,12 @@ This assignment uses the simple [Sinatra](https://github.com/sinatra/sinatra) fr
 Contents
 ---------
 
-* Part 0: [Demystifying SaaS app creation](docs/part_0_create_saas_app.md)
-* Part 1: [Wordguesser](docs/part_1_wordguesser.md)
-* Part 2: [RESTful thinking for Wordguesser](docs/part_2_restful_thinking.md)
-* Part 3: [Connecting WordGuesserGame to Sinatra](docs/part_3_connecting_wordguesser_to_sinatra.md)
-* Part 4: [Introducing Cucumber](docs/part_4_cucumber.md)
-* Part 5: [Corner Cases](docs/part_5_corner_cases.md)
-* Part 6: [Conclusion](docs/part_6_conclusion.md)
-* Part 7: [Optional Challenge Assignment](docs/part_7_optional_challenge.md)
+* Part 0: [Demystifying SaaS app creation](instructions/01-Part-0--Demystifying-SaaS-app-creation.md)
+* Part 1: [Wordguesser](instructions/02-Part-1--Wordguesser.md)
+* Part 2: [RESTful thinking for Wordguesser](instructions/03-Part-2--RESTful-thinking-for-Wordguesser.md)
+* Part 3: [Connecting WordGuesserGame to Sinatra](instructions/04-Part-3--Connecting-WordGuesserGame-to-Sinatra.md)
+* Part 4: [Introducing Cucumber](instructions/05-Part-4--Introducing-Cucumber.md)
+* Part 5: [Corner Cases](instructions/06-Part-5--Corner-Cases.md)
+* [Submission](instructions/07-Submission.md)
+* [Conclusion](instructions/08-Conclusion.md)
+* [Optional Challenge Assignment](instructions/09-Optional-challenge-assignment.md)
