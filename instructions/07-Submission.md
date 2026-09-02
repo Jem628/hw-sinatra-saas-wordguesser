@@ -6,17 +6,9 @@
 
 Submission Instructions
 -----------------------
-> **Check It! (100 points)**
+> **Submission (100 points)**
 >
-> To submit your deployed Heroku app, paste the URL into the file on the left (it should look something like `http://my-app-12345.herokuapp.com`).
->
-> Visit the same URL that you put into the text file with your web browser to be sure that your app is running correctly at that address before submitting the text file.
->
->  Make sure that the link starts with `http` instead of `https` for the autograder to work.
->
-> Submit by clicking the button below.
->
-> _On Codio, this check runs when you press the button. Working outside Codio? Submit through your course's Gradescope assignment instead._
+> You should now be ready to submit your assignment. Remember to run your test cases once more, then submit your files to Gradescope, Codio or whichever platform your course is using.
 
 ---
 

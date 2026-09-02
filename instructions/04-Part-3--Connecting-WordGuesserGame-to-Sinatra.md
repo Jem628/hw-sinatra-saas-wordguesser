@@ -44,7 +44,7 @@ As before, run the shell command `bundle exec rackup --host 0.0.0.0 --port 3000`
 
 <details>
   <summary>Based on the output from running this command, what is the full URL you need to visit in order to visit the New Game page?</summary>
-  <p><blockquote>The Ruby code <code>get '/new' do...</code> in <code>app.rb</code> renders the New Game page, so the full URL is in the form <code>http://localhost:3000/new</code></p>
+  <p><blockquote>The Ruby code <code>get '/new' do...</code> in <code>app.rb</code> renders the New Game page, so the full URL is in the form <code>http://localhost:3000/new</code></blockquote></p>
 </details>
 <br />
 

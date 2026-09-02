@@ -54,7 +54,7 @@ The first command stages all changed files for committing. The second command co
 
 <details>
   <summary>What's the difference between the purpose and contents of <code>Gemfile</code> and <code>Gemfile.lock</code>?  Which file is needed to completely reproduce the development environment's gems in the production environment?</summary>
-  <p><blockquote><code>Gemfile</code> specifies the gems you need and in some cases the constraints on which version(s) are acceptable. <code>Gemfile.lock</code> records the *actual* versions found, not only of the gems you specified explicitly but also any other gems on which they depend, so it is the file used by the production environment to reproduce the gems available in the development environment.</blockquote></p>
+  <p><blockquote><code>Gemfile</code> specifies the gems you need and in some cases the constraints on which version(s) are acceptable. <code>Gemfile.lock</code> records the <em>actual</em> versions found, not only of the gems you specified explicitly but also any other gems on which they depend, so it is the file used by the production environment to reproduce the gems available in the development environment.</blockquote></p>
 </details>
 <br />
 <details>
@@ -91,8 +91,8 @@ The `get` method is provided by the `Sinatra::Base` class, from which our `MyApp
 #### Self Check Question
 
 <details>
-  <summary>What *two* steps did we take earlier to guarantee that the Sinatra library is available to load in line 1?</summary>
-  <p><blockquote> We specified <code>gem 'sinatra'</code> in the <code>Gemfile</code> *and* successfully ran <code>bundle</code> to confirm that the gem is installed and "lock" the correct version of it in <code>Gemfile.lock</code>.</blockquote></p>
+  <summary>What <em>two</em> steps did we take earlier to guarantee that the Sinatra library is available to load in line 1?</summary>
+  <p><blockquote> We specified <code>gem 'sinatra'</code> in the <code>Gemfile</code> <em>and</em> successfully ran <code>bundle</code> to confirm that the gem is installed and "lock" the correct version of it in <code>Gemfile.lock</code>.</blockquote></p>
 </details>
 
 <br />
@@ -110,6 +110,7 @@ run MyApp
 The first line tells Rack that our app lives in the file `app.rb`, which you created above to hold your app's code.  We have to explicitly state that our `app` file is located in the current directory (.) because `require` normally looks only in standard system directories to find gems.
 
 You're now ready to test-drive our simple app with a command line:
+
 | Local computer | Codio |
 |-----|------|
 | `bundle exec rackup --port 3000` | `bundle exec rackup --host 0.0.0.0 --port 3000` |
@@ -157,6 +158,7 @@ Now run `bundle install` to have it download the `rerun` gem and any dependencie
 Any gem specifications inside the `group :development` block will only be examined if bundle is run in the development environment.  (The other environments you can specify are :test and :production, and you can define new environments yourself.)  Gem specifications outside of any group block are assumed to apply in all environments.
 
 Say the following in the terminal window to start your app and verify the app is running:
+
 | Local computer | Codio |
 |-----|------|
 | `bundle exec rerun -- rackup --port 3000` | `bundle exec rerun -- rackup -p 3000 -o 0.0.0.0` |
@@ -200,10 +202,6 @@ To create your app on Render:
 Render will run `bundle install`, start your app, and give you a live URL. Real-time build logs appear in the dashboard as it deploys.
 
 > **Note:** Free Render services spin down after 15 minutes of inactivity. The first request after idle takes about 1 minute to respond — this is normal, not a broken deployment. Visit your app URL a couple minutes before any demo to warm it up.
-heroku apps:favorites:add -a fa23-xx
-heroku git:remote -a fa23-xx
-heroku stack:set heroku-24
-```
 
 Summary
 -------
