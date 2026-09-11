@@ -7,7 +7,7 @@ def filtered_page(selector)
 end
 
 When(/^I start a new game with word "(.*)"$/) do |word|
-  stub_request(:post, "http://randomword.saasbook.info/RandomWord")
+  stub_request(:get, "https://randomword.saasbook.info/RandomWord.txt")
     .to_return(status: 200, headers: {}, body: word)
   visit '/new'
   click_button "New Game"

@@ -65,7 +65,7 @@ The create-new-game code in the Sinatra app should do the following:
 
 View how these steps are actualized in the app.rb file under the `post /create do` route.
 
-**If you previously deployed to Render**, create a PR for the changes you've made since then, get it approved, merge the changes into the main branch of GitHub, checkout to the main branch in Codio and pull in the changes. Render will automatically redeploy from the updated main branch. Manually verify the improved behavior of the app.
+**If you previously deployed to Render**, create a PR for the changes you've made since then, review your own diff, and merge the changes into the main branch of GitHub. Then check out the main branch locally and pull in the changes. Render will automatically redeploy from the updated main branch. Manually verify the improved behavior of the app.
 
 #### Self Check Question
 
@@ -78,7 +78,7 @@ For this scenario, in `features/guess.feature`, we've already provided a correct
 
 #### Self Check Question
 
-<details><summary>In <code>game_steps.rb</code>, look at the code for "I start a new game..." step, and in particular the <code>stub_request</code> command.  Given the hint that that command is provided by a Gem (library) called <code>webmock</code>, what's going on with that line, and why is it needed?  (Use Google if needed.)</summary><p><blockquote>Webmock lets our tests "intercept" HTTP requests coming <strong>from</strong> our app and directed to another service.  In this case, it's intercepting the POST request (the same one you manually did with <code>curl</code> in an earlier part of the assignment) and faking the reply value.  This lets us enforce deterministic behavior of our tests, and also means we're not hitting the real external server each time our test runs.</blockquote></p></details>
+<details><summary>In <code>game_steps.rb</code>, look at the code for "I start a new game..." step, and in particular the <code>stub_request</code> command.  Given the hint that that command is provided by a Gem (library) called <code>webmock</code>, what's going on with that line, and why is it needed?  (Use Google if needed.)</summary><p><blockquote>Webmock lets our tests "intercept" HTTP requests coming <strong>from</strong> our app and directed to another service.  In this case, it's intercepting the GET request (the same one you manually did with <code>curl</code> in an earlier part of the assignment) and faking the reply value.  This lets us enforce deterministic behavior of our tests, and also means we're not hitting the real external server each time our test runs.</blockquote></p></details>
 
 The special Sinatra hash `params[]` has a key-value pair for each nonblank field on a submitted form: the key is the symbolized `name` attribute of the form field and the value is what the user typed into that field, or in the case of a checkbox or radiobutton, the browser-specified values indicating if it's checked or unchecked. ("Symbolized" means the string is converted to a symbol, so `"foo"` becomes `:foo`.)
 

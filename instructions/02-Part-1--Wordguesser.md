@@ -1,11 +1,17 @@
 # Part 1: Wordguesser
 
 ----------------
-With all this machinery in mind, clone this repo and let's work on our word-guessing game (Wordguesser).
+With all this machinery in mind, let's work on our word-guessing game (Wordguesser).
+
+You need **your own copy** of the starter code, because you'll be pushing commits to it and deploying it to Render, and you cannot push to the course's copy. Go to the [Wordguesser starter repo](https://github.com/saasbook/hw-sinatra-saas-wordguesser) and click the green **Use this template → Create a new repository** button. Give it a name, and choose **Private** so your work isn't visible to other students.
+
+(You can **Fork** instead, but a fork of a public repo is always public, and it carries the whole upstream history. "Use this template" gives you a clean repo with a single initial commit.)
+
+Now clone *your* copy and install its gems, substituting your own GitHub username and repo name:
 
 ```sh
-git clone https://github.com/saasbook/hw-sinatra-saas-wordguesser
-cd hw-sinatra-saas-wordguesser
+git clone git@github.com:[GITHUB_USERNAME]/[YOUR_REPO_NAME].git
+cd [YOUR_REPO_NAME]
 bundle
 ```
 
@@ -62,10 +68,10 @@ When running tests, you can insert the Ruby command `byebug` into your app code 
 * Take a look at the code in the class method `get_random_word`, which retrieves a random word from a Web service we found that does just that.  Use the following command to verify that the Web service actually works this way. Run it several times to verify that you get different words.
 
 ```
-$ curl --data '' http://randomword.saasbook.info/RandomWord
+$ curl https://randomword.saasbook.info/RandomWord.txt
 ```
 
-(`--data` is necessary to force `curl` to do a POST rather than a GET.  Normally the argument to `--data` would be the encoded form fields, but in this case no form fields are needed.) Using `curl` is a great way to debug interactions with external services.  `man curl` for (much) more detail on this powerful command-line tool.
+(The service decides the format of its reply from the ending you ask for: `.txt` returns just the word, which is what our code wants. Try `curl https://randomword.saasbook.info/RandomWord.json` and `curl https://randomword.saasbook.info/RandomWord` to see the same kind of word wrapped in JSON and in HTML instead.) Using `curl` is a great way to debug interactions with external services.  `man curl` for (much) more detail on this powerful command-line tool.
 
 ---
 

@@ -62,7 +62,7 @@ Verify that when you click the New Game button, you get an error.  This is becau
 
 Time to PR
 ----------
-Now let's get this local progress onto your remote GitHub repo. If you have been chosen by your team or are simply the first on your team to get to this point then you can feel free to make a Pull Request (PR) to the main branch of your GitHub repo. This can be done directly through the GitHub site by clicking the "`X` branches" button near the top of the repo page.
+Now let's get this local progress onto your remote GitHub repo by making a Pull Request (PR) from your branch to the main branch of your GitHub repo. This can be done directly through the GitHub site by clicking the "`X` branches" button near the top of the repo page.
 
 ![](img/branches.png)
 
@@ -70,13 +70,13 @@ From here, find your branch and click `New pull request`.
 
 ![](img/open_pr.png)
 
-Now make sure that the base branch is `main` and that the compare branch is your own. Then add a title, description of the changes you've made and any other info that you'd like your team to know about your PR. Create the PR and let your teammates know so that they can check out the changes and give you approval.
+Now make sure that the base branch is `main` and that the compare branch is your own. Then add a title and a description of the changes you've made. Writing a clear PR description is a habit worth building now: on a real project it is how reviewers understand your work, and here it is how *you* will remember what a branch was for when you come back to it.
 
 ![](img/create_pr.png)
 
-Protocols vary from team to team but in general, it is good practice to have at least 1, preferrably 2, teammates review your changes to ensure that no bugs creep through the merge. Once the reviews are in, all comments addressed, and any potential merge conflicts are resolved, merge in your changes!
+Before merging, use the PR's "Files changed" tab to review your own diff. Reading your changes as a stranger would is a surprisingly effective way to catch debugging leftovers, commented-out code, and accidental edits before they reach `main`. On a team this is where a reviewer would weigh in; working solo, you are the reviewer. Once you're happy with the diff and any merge conflicts are resolved, merge in your changes!
 
-Now, in Codio get back on the master branch and pull in the newest changes with `git checkout master && git pull gh main`.
+Now get back on the main branch locally and pull in the newly merged changes with `git checkout main && git pull origin main`.
 
 Deploying to Render
 ----------
@@ -93,7 +93,7 @@ Your local repo is now ready to deploy:
 
 * Run `bundle install` to make sure your Gemfile and Gemfile.lock are in sync.
 * Stage and commit all changes: `git add . && git commit -m "Ready for Render!"`
-* Push to GitHub: `git push gh main`
+* Push to GitHub: `git push origin main`
 
 Since Render is connected to your GitHub repo and auto-deploy is enabled, pushing to `main` automatically triggers a new build and deployment on Render. No separate push command is needed.
 

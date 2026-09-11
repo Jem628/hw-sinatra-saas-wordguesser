@@ -111,17 +111,19 @@ The first line tells Rack that our app lives in the file `app.rb`, which you cre
 
 You're now ready to test-drive our simple app with a command line:
 
-| Local computer | Codio |
+| Local computer | Docker, Codespaces, or Codio |
 |-----|------|
 | `bundle exec rackup --port 3000` | `bundle exec rackup --host 0.0.0.0 --port 3000` |
+
+The `--host 0.0.0.0` in the right-hand column matters whenever the app runs somewhere other than your own machine. By default the appserver only accepts connections from the machine it is running on, so a container would refuse the request your browser makes from outside it. `0.0.0.0` tells it to accept connections on every network interface.
 
 This command starts the Rack appserver and the WEBrick webserver.  Prefixing it with `bundle exec` ensures that you are running with the gems specified in `Gemfile.lock`.  Rack will look for `config.ru` and attempt to start our app based on the information there.
 
 To see the webapp:
 
-| Local computer | Codio |
+| Local computer | Docker, Codespaces, or Codio |
 |-----|------|
-| Visit `localhost:3000` in your browser to see the webapp. It will open in a new tab in the IDE if you click on it, but you should open up a fresh browser tab and paste in that URL. <br><br> Point a new Web browser tab at the running app's URL and verify that you can see "Hello World". | Click the "Box URL" button on your top tool bar that has been pre-configured to point at port 3000: <br> <br> ![BoxURL](img/BoxURLpreview.png) <br> <br> The app should open in a new tab. Make sure to configure the box url to open the app in a new browser tab instead of a codio tab as the latter don't always work. Verify that you can see "Hello World". |
+| Open a fresh browser tab, visit `localhost:3000`, and verify that you can see "Hello World". | Your app is running inside a container or a remote machine, so you reach it through a forwarded port rather than directly. <br><br> **Docker:** start the container with `-p 3000:3000`, then visit `localhost:3000` in your own browser. <br><br> **Codespaces:** the port is forwarded for you as soon as the server starts, and a notification offers to open it. If you dismissed that notification, open the **Ports** panel, find port 3000, and click the globe icon to open it in your browser. If port 3000 isn't listed at all, click **Forward a Port** and enter `3000`. <br><br> **Codio:** click the "Box URL" button on the top toolbar, which is pre-configured to point at port 3000. Set it to open in a new browser tab rather than a Codio tab, as the latter doesn't always work. <br> <br> ![BoxURL](img/BoxURLpreview.png) <br><br> Verify that you can see "Hello World". |
 
 #### Self Check Question
 
@@ -141,7 +143,7 @@ Modify `app.rb` so that instead of "Hello World" it prints "Goodbye World". Save
 
 No changes? Confused?
 
-Now go back to the shell window where you ran `rackup` and press Ctrl-C to stop Rack.  Then type `bundle exec rackup --port 3000` for local development or `$bundle exec rackup --host 0.0.0.0 --port 3000` for Codio development again, and once it is running, go back to your browser tab with your app and refresh the page.  This time it should work.
+Now go back to the shell window where you ran `rackup` and press Ctrl-C to stop Rack.  Then start it again with `bundle exec rackup --port 3000` (or `bundle exec rackup --host 0.0.0.0 --port 3000` in Docker, Codespaces, or Codio), and once it is running, go back to your browser tab with your app and refresh the page.  This time it should work.
 
 What this shows you is that if you modify your app while it's running, you have to restart Rack in order for it to "see" those changes.  Since restarting it manually is tedious, we'll use the `rerun` gem, which restarts Rack automatically when it sees changes to files in the app's directory. (Rails does this for you by default during development, as we'll see, but Sinatra doesn't.)
 
@@ -159,7 +161,7 @@ Any gem specifications inside the `group :development` block will only be examin
 
 Say the following in the terminal window to start your app and verify the app is running:
 
-| Local computer | Codio |
+| Local computer | Docker, Codespaces, or Codio |
 |-----|------|
 | `bundle exec rerun -- rackup --port 3000` | `bundle exec rerun -- rackup -p 3000 -o 0.0.0.0` |
 
@@ -173,18 +175,18 @@ Modify `app.rb` to print a different message, and verify that the change is dete
 
 Git Walkthrough
 ----------------
-You and your group share a GitHub team that is named `fa23-xx` where the `xx` is your group number. As part of this team you will each have access to a repo called `fa23-chips3.7-xx` where you will keep track of each of your versions of this CHIPS. We will use this as an opportunity to teach you some Git tricks that you'll be using for the rest of the term.
+You'll keep this work in your own GitHub repository. On GitHub, click **New repository**, give it a name such as `chips-3.7`, and create it *empty* — no README, no `.gitignore`, no license — so that it doesn't conflict with the app you just built locally. We will use this as an opportunity to teach you some Git tricks that you'll be using for the rest of the term.
 
-First, you'll need to add the GitHub repo as a remote to your Codio local repo. In the GitHub repo, navigate to the green "Code" dropdown and copy the SSH link. Then run this command.
+First, you'll need to add the GitHub repo as a remote to your local repo. In the GitHub repo, navigate to the green "Code" dropdown and copy the SSH link. Then run this command.
 ```
-git remote add gh [SSH_LINK]
+git remote add origin [SSH_LINK]
 ```
-This will add the GitHub repo to the project as a remote repo named gh. While you could push directly to the main branch of this repo, in order to keep main clean for the final submission, each of you will make a branch locally and on the GitHub remote repo by running the commands below.
+This will add the GitHub repo to the project as a remote repo named `origin`, the conventional name for the main remote a repo is associated with. While you could push directly to the main branch of this repo, in order to keep main clean for the final submission, you'll make a branch locally and on the GitHub remote repo by running the commands below.
 ```
-git checkout -b [GITHUB_USERNAME]
-git push -u gh [GITHUB_USERNAME]
+git checkout -b chips-3.7
+git push -u origin chips-3.7
 ```
-From this branch, your teammates will be able to view your code and you'll eventually be able to make a Pull Request to finalize your changes before merging back into the main branch which we'll provide detailed instructions for in Part 3 of this assignment. In the meantime, **as long as you're on your own branch**, whenever you want to update your code you'll need to git add, commit, and simply `git push gh`.
+Working on a branch keeps `main` deployable while you experiment, and it sets you up to make a Pull Request to finalize your changes before merging back into the main branch, which we'll provide detailed instructions for in Part 3 of this assignment. In the meantime, **as long as you're on your own branch**, whenever you want to update your code you'll need to git add, commit, and simply `git push`.
 
 Deploy to Render
 ----------------
@@ -193,7 +195,7 @@ Render is a cloud platform-as-a-service (PaaS) where we can deploy our Sinatra (
 To create your app on Render:
 
 1. From the Render dashboard, click **New > Web Service**
-2. Connect your GitHub repo (select the `fa23-chips3.7-xx` repo for your team)
+2. Connect your GitHub repo (select the repo you created above)
 3. Give the service a name — this becomes part of your public URL (`https://<name>.onrender.com`)
 4. Set the **Build Command** to: `bundle install`
 5. Set the **Start Command** to: `bundle exec rackup config.ru -p $PORT`
@@ -214,7 +216,7 @@ Summary
 
 * You versioned the important files containing not only your app's code but the necessary info to reproduce all the libraries it relies on and the file that starts up the app.
 
-* You or one of your teammates deployed this simple app to Render.
+* You deployed this simple app to Render.
 
 -----
 
